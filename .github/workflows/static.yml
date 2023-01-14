@@ -34,7 +34,7 @@ jobs:
       - name: Get Discord DEBs
         run: |
           wget https://discord.com/api/download?platform=linux&format=deb
-          ls -1 > index.html
+          ls -1 | tr "\n" " " | sed "s/ /<br>/g" > index.html
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
