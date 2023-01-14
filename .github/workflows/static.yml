@@ -34,6 +34,12 @@ jobs:
       - name: Get Discord DEBs
         run: |
           wget https://discord.com/api/download?platform=linux&format=deb
+          ls -1
+      - name: Build Index
+        run: |
+          python -m http.server 8080 &
+          sleep 5
+          wget http://localhost:8080 -O index.html
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
