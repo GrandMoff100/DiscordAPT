@@ -30,7 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Python
-        uses: actions/setup-python@latest
+        uses: actions/setup-python@v3
       - name: Get Discord DEBs
         run: |
           wget https://discord.com/api/download?platform=linux&format=deb
