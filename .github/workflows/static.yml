@@ -37,12 +37,15 @@ jobs:
       - name: Import My GPG Key
         run: |
           echo $PRIVATE_KEY > private.key
-          export KEYNAME=$(gpg --import private.key 2>/dev/stdout \
+          gpg --import private.key 2>/dev/stdout > import.log
+          cat import.log
+          export KEYNAME=$(cat import.log \
             | grep "secret key imported" \
             | sed "s/gpg: key //g" \
             | sed "s/: secret key imported//g")
+          echo "Found Key: $KEYNAME"
           echo "::set-env name=KEYNAME::$KEYNAME"
-          gpg --export --armor --output KEY.gpg
+          gpg --export --armor --output KEY.gpg $KEYNAME
         env:
           PRIVATE_KEY: ${{ vars.PRIVATE_KEY }}
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
