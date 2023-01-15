@@ -36,8 +36,7 @@ jobs:
           sudo apt-get install dpkg-dev dpkg-sig
       - name: Import My GPG Key
         run: |
-          echo $PRIVATE_KEY > private.key
-          gpg --import private.key 2>/dev/stdout > import.log
+          echo $PRIVATE_KEY | gpg --import --dearmor 2>/dev/stdout > import.log
           cat import.log
           export KEYNAME=$(cat import.log \
             | grep "secret key imported" \
