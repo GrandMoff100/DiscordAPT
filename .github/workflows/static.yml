@@ -51,10 +51,10 @@ jobs:
       - name: Extract Package Metadata
         run: |
           ar vx discord.deb
+          ls -A
           tar -xvzf control.tar.gz control && rm control.tar.gz
-          mkdir --parents dists/latest/amd64
-          mv discord.deb dists/latest/amd64
-          mv control dists/latest/Release
+          mkdir amd64 && mv discord.deb amd64
+          mv control Release
       - name: Setup Debian Repository
         run: |
           cd dists/latest
