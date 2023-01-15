@@ -1,5 +1,5 @@
 # DiscordAPT
-A Github Pages hosted repository for updating discord.
+A Github Pages hosted APT repository for installing discord.
 
 
 ## Importing The Key
