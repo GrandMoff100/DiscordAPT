@@ -53,12 +53,11 @@ jobs:
         run: |
           ar vx discord.deb
           ls -A
-          tar -xvzf control.tar.gz
+          tar -xvzf control.tar.gz ./control && rm -rf *.tar.gz debian-binary
           mkdir amd64 && mv discord.deb amd64
           mv control Release
       - name: Setup Debian Repository
         run: |
-          cd dists/latest
           apt-ftparchive --arch amd64 packages amd64 > Packages
           gzip -k -f Packages
           apt-ftparchive release . >> Release
