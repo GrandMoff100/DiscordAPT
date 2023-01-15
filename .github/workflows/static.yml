@@ -52,7 +52,7 @@ jobs:
         run: |
           ar vx discord.deb
           ls -A
-          tar -xvzf control.tar.gz control && rm control.tar.gz
+          tar -xvzf control.tar.gz
           mkdir amd64 && mv discord.deb amd64
           mv control Release
       - name: Setup Debian Repository
