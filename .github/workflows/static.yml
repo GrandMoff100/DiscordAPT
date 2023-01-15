@@ -1,5 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Deploy Discord DEB to PPA repo
 
 on:
   # Runs on pushes targeting the default branch
@@ -40,33 +40,23 @@ jobs:
         with:
           gpg_private_key: ${{ vars.PRIVATE_KEY }}
           passphrase: ${{ secrets.KEY_PASSPHRASE }}
-      - name: Get Latest Discord DEB
-        run: |
-          wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
-      - name: Extract Package Metadata
-        run: |
-          ar vx discord.deb
-          ls -A
-          tar -xvzf control.tar.gz ./control && rm -rf *.tar.gz debian-binary
-          mkdir amd64 && mv discord.deb amd64
-          mv control Release
-      - name: Setup Debian Repository
-        run: |
-          apt-ftparchive packages amd64 > Packages
-          cat Packages
-          gzip -k -f Packages
-          apt-ftparchive release . >> Release
-          cat Release
-          echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME -abs -o Release.gpg Release
-          echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME --clearsign -o InRelease Release
-          ls -A
-        env:
-          KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
-          KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
       - name: Export the Public Key
         run: |
           gpg --output KEY.gpg --armor --export $KEYNAME
         env:
+          KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
+      - name: Get Latest Discord DEB
+        run: |
+          wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
+      - name: Setup Debian Repository
+        run: |
+          dpkg-scanpackages --multiversion . > Packages
+          gzip -k -f Packages
+          apt-ftparchive release . >> Release
+          echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME -abs -o - Release > Release.gpg
+          echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME --clearsign -o - Release > InRelease
+        env:
+          KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
