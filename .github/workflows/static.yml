@@ -42,7 +42,7 @@ jobs:
           passphrase: ${{ secrets.KEY_PASSPHRASE }}
       - name: Export the Public Key
         run: |
-          gpg --output KEY.gpg --armor --export $KEYNAME
+          gpg --output discordapt.gpg --armor --export $KEYNAME
         env:
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
       - name: Get Latest Discord DEB
@@ -55,6 +55,7 @@ jobs:
           apt-ftparchive release . >> Release
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME -abs -o - Release > Release.gpg
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME --clearsign -o - Release > InRelease
+          echo "deb [signed-by=/etc/apt/trusted.gpg.d/discordapt.gpg] https://grandmoff100.github.io/DiscordAPT/ ./" > discordapt.list
         env:
           KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
