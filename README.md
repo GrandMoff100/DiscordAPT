@@ -6,14 +6,14 @@ A Github Pages hosted APT repository for installing discord.
 
 ```bash
 sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://grandmoff100.github.io/KEY.gpg | sudo gpg --dearmor --output /etc/apt/keyrings/discordapt.gpg
+curl -fsSL https://grandmoff100.github.io/KEY.gpg | sudo gpg --dearmor --output /etc/apt/trusted.gpg.d/discordapt.gpg
 ```
 
 ## Adding the package to your APT repos
 
 ```bash
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/discordapt.gpg] https://grandmoff100.github.io/ /" | sudo tee /etc/apt/sources.list.d/discordapt.list > /dev/null
+  "deb https://grandmoff100.github.io/ /" | sudo tee /etc/apt/sources.list.d/discordapt.list > /dev/null
 ```
 
 ## Install the package
