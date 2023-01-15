@@ -52,11 +52,14 @@ jobs:
           mv control Release
       - name: Setup Debian Repository
         run: |
-          apt-ftparchive --arch amd64 packages amd64 > Packages
+          apt-ftparchive packages amd64 > Packages
+          cat Packages
           gzip -k -f Packages
           apt-ftparchive release . >> Release
+          cat Release
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME -abs -o Release.gpg Release
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME --clearsign -o InRelease Release
+          ls -A
         env:
           KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
