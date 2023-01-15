@@ -6,7 +6,7 @@ A Github Pages hosted APT repository for installing discord.
 
 ```bash
 sudo mkdir -p /etc/apt/keyrings
-curl -fsSL https://grandmoff100.github.io/KEY.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/discordapt.gpg
+curl -fsSL https://grandmoff100.github.io/Release.gpg > /etc/apt/keyrings/discordapt.gpg
 ```
 
 ## Adding the package to your APT repos
