@@ -60,6 +60,11 @@ jobs:
         env:
           KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
+      - name: Export the Public Key
+        run: |
+          gpg --output Release.gpg --export $KEYNAME
+        env:
+          KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
