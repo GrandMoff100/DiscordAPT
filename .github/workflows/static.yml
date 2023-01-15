@@ -63,7 +63,6 @@ jobs:
       - name: Export the Public Key
         run: |
           gpg --armor --output KEY.gpg --export $KEYNAME
-          gpg --output Release.gpg $KEYNAME
         env:
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
       - name: Setup Pages
