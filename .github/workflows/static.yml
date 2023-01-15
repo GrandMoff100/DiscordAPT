@@ -37,7 +37,7 @@ jobs:
       - name: Import My GPG Key
         run: |
           echo $PRIVATE_KEY > private.key
-          cat private.key
+          gpg --version
           gpg --import private.key # 2>/dev/stdout
           # cat import.log
           # export KEYNAME=$(cat import.log \
