@@ -31,11 +31,37 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Python
         uses: actions/setup-python@v3
-      - name: Get Discord DEBs
+      - name: Install Some Dependencies
+        run: |
+          sudo apt-get install dpkg-dev dpkg-sig
+      - name: Import My GPG Key
+        run: |
+          echo $PRIVATE_KEY > private.key
+          export KEYNAME=$(gpg --import private.key 2>/dev/stdout \
+            | grep "secret key imported" \
+            | sed "s/gpg: key //g" \
+            | sed "s/: secret key imported//g")
+          echo "::set-env name=KEYNAME::$KEYNAME"
+        env:
+          PRIVATE_KEY: ${{ variables.PRIVATE_KEY }}
+      - name: Get Latest Discord DEB
         run: |
           wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
-          ls -A
-          ls -1 | tr "\n" " " | sed "s/ /<br>/g" > index.html
+      - name: Extract Package Metadata
+        run: |
+          ar vx discord.deb
+          tar -xvzf control.tar.gz control && rm control.tar.gz
+          mkdir --parents dists/latest/amd64
+          mv discord.deb dists/latest/amd64
+          mv control dists/latest/Release
+      - name: Setup Debian Repository
+        run: |
+          cd dists/latest
+          apt-ftparchive --arch amd64 packages amd64 > Packages
+          gzip -k -f Packages
+          apt-ftparchive release . >> Release
+          gpg --default-key $KEYNAME -abs -o Release.gpg Release
+          gpg --default-key $KEYNAME --clearsign -o InRelease Release
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
