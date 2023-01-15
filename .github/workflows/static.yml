@@ -34,22 +34,11 @@ jobs:
       - name: Install Some Dependencies
         run: |
           sudo apt-get install dpkg-dev dpkg-sig
-      - name: Import My GPG Key
-        run: |
-          echo $PRIVATE_KEY > private.key
-          gpg --version
-          gpg --import private.key # 2>/dev/stdout
-          # cat import.log
-          # export KEYNAME=$(cat import.log \
-          #   | grep "secret key imported" \
-          #   | sed "s/gpg: key //g" \
-          #   | sed "s/: secret key imported//g")
-          # echo "Found Key: $KEYNAME"
-          # echo "::set-env name=KEYNAME::$KEYNAME"
-          # gpg --export --armor --output KEY.gpg $KEYNAME
-        env:
-          PRIVATE_KEY: ${{ vars.PRIVATE_KEY }}
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v5
+        with:
+          gpg_private_key: ${{ vars.PRIVATE_KEY }}
+          passphrase: ${{ secrets.KEY_PASSPHRASE }}
       - name: Get Latest Discord DEB
         run: |
           wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
