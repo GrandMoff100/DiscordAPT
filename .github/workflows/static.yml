@@ -43,7 +43,7 @@ jobs:
             | sed "s/: secret key imported//g")
           echo "::set-env name=KEYNAME::$KEYNAME"
         env:
-          PRIVATE_KEY: ${{ variables.PRIVATE_KEY }}
+          PRIVATE_KEY: ${{ vars.PRIVATE_KEY }}
       - name: Get Latest Discord DEB
         run: |
           wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
