@@ -44,6 +44,7 @@ jobs:
           echo "::set-env name=KEYNAME::$KEYNAME"
         env:
           PRIVATE_KEY: ${{ vars.PRIVATE_KEY }}
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
       - name: Get Latest Discord DEB
         run: |
           wget "https://discord.com/api/download?platform=linux&format=deb" -O discord.deb
