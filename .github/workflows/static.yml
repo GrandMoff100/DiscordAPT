@@ -59,7 +59,7 @@ jobs:
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME --clearsign -o InRelease Release
         env:
           KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
-          KEYNAME: ${{ outputs.gpg_key_import.keyid }}
+          KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
