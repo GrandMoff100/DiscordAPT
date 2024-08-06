@@ -56,7 +56,7 @@ jobs:
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME -abs -o - Release > Release.gpg
           echo $KEY_PASSPHRASE | gpg --yes --passphrase-fd 0 --default-key $KEYNAME --clearsign -o - Release > InRelease
           echo "deb [signed-by=/etc/apt/trusted.gpg.d/discordapt.gpg] https://grandmoff100.github.io/DiscordAPT/ ./" > discordapt.list
-          ls -hlA > index.html
+          ls -hlA | tr '\n' '\\' | sed 's/\\/ <br\/>/g' > index.html
         env:
           KEY_PASSPHRASE: ${{ secrets.KEY_PASSPHRASE }}
           KEYNAME: ${{ steps.gpg_key_import.outputs.keyid }}
