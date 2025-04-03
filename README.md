@@ -5,7 +5,7 @@ Pulls the latest `deb` file from Discord nightly.
 
 
 ## Notice
-This repository is no longer needed as of April 1, 2025. Please go look at the [Snapcrafters community project](https://github.com/snapcrafters/discord).
+This repository is a bit tricky to setup for beginners. For an easier (and more maintained) way to install discord via command-line please go look at the [Snapcrafters community project](https://github.com/snapcrafters/discord).
 
 
 ## Setup
